@@ -1,0 +1,310 @@
+.result-display {
+  width: 100%;
+  text-align: left;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.result-status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-radius: 15px;
+  flex: 1;
+  min-width: 250px;
+}
+
+.result-status.malicious {
+  background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.05) 100%);
+  border: 2px solid #dc3545;
+}
+
+.result-status.benign {
+  background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%);
+  border: 2px solid #28a745;
+}
+
+.status-icon {
+  font-size: 3rem;
+}
+
+.status-text h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.result-status.malicious h2 {
+  color: #dc3545;
+}
+
+.result-status.benign h2 {
+  color: #28a745;
+}
+
+.filename {
+  margin: 0.5rem 0 0 0;
+  color: #666;
+  font-size: 1rem;
+  word-break: break-all;
+}
+
+.confidence-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.confidence-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.confidence-inner {
+  width: 60px;
+  height: 60px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.confidence-label {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 600;
+}
+
+.result-details {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.explanation-section,
+.features-section,
+.risk-assessment,
+.technical-info {
+  background: rgba(248, 249, 250, 0.8);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+.explanation-section h3,
+.features-section h3,
+.risk-assessment h3,
+.technical-info h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 0.5rem;
+}
+
+.explanation-text {
+  color: #555;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.feature-item {
+  text-align: center;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.feature-label {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.feature-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.entropy-bar {
+  width: 100%;
+  height: 4px;
+  background: #e9ecef;
+  border-radius: 2px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.entropy-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #28a745, #ffc107, #dc3545);
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.risk-level {
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid;
+}
+
+.risk-level.high-risk {
+  background: rgba(220, 53, 69, 0.05);
+  border-left-color: #dc3545;
+}
+
+.risk-level.low-risk {
+  background: rgba(40, 167, 69, 0.05);
+  border-left-color: #28a745;
+}
+
+.risk-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.risk-icon {
+  font-size: 1.2rem;
+}
+
+.risk-text {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.risk-level.high-risk .risk-text {
+  color: #dc3545;
+}
+
+.risk-level.low-risk .risk-text {
+  color: #28a745;
+}
+
+.risk-description {
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.tech-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tech-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.tech-item:last-child {
+  border-bottom: none;
+}
+
+.tech-label {
+  font-weight: 600;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.tech-value {
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.disclaimer {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid #ffc107;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #856404;
+  text-align: center;
+}
+
+.disclaimer p {
+  margin: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .result-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .result-status {
+    justify-content: center;
+    min-width: auto;
+  }
+  
+  .status-text h2 {
+    font-size: 1.5rem;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tech-item {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .confidence-circle {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .confidence-inner {
+    width: 50px;
+    height: 50px;
+    font-size: 0.9rem;
+  }
+}
