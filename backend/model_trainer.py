@@ -12,7 +12,7 @@ warnings.filterwarnings('ignore')
 class MalwareModelTrainer:
     """Train and manage malware detection models"""
     
-    def __init__(self, model_path='../models/malware_detector.joblib'):
+    def __init__(self, model_path='models/malware_detector.joblib'):
         self.model_path = model_path
         self.model = None
         self.feature_names = ['file_size', 'entropy', 'imports_count']
@@ -164,7 +164,7 @@ class MalwareModelTrainer:
             print(f"Error loading model: {e}")
             return None
 
-def load_model(model_path='../models/malware_detector.joblib'):
+def load_model(model_path='models/malware_detector.joblib'):
     """Utility function to load model for the Flask app"""
     try:
         if not os.path.exists(model_path):
