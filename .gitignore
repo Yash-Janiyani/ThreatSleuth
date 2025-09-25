@@ -1,4 +1,10 @@
+# ============================================
+# ThreatSleuth - Optimized .gitignore
+# ============================================
+
+# ============================================
 # Python
+# ============================================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -45,7 +51,9 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# Environments
+# ============================================
+# Virtual Environments
+# ============================================
 .env
 .venv
 env/
@@ -54,11 +62,15 @@ ENV/
 env.bak/
 venv.bak/
 
+# ============================================
 # Flask
+# ============================================
 instance/
 .webassets-cache
 
-# Node.js
+# ============================================
+# Node.js & React
+# ============================================
 node_modules/
 npm-debug.log*
 yarn-debug.log*
@@ -86,7 +98,6 @@ coverage/
 build/Release
 
 # Dependency directories
-node_modules/
 jspm_packages/
 
 # TypeScript cache
@@ -137,15 +148,18 @@ dist
 
 # Gatsby files
 .cache/
-public
+# Don't ignore public folder for React apps
+# public
 
 # Storybook build outputs
 .out
 .storybook-out
 
+# ============================================
 # Machine Learning
+# ============================================
+# Large ML files (exclude)
 *.pkl
-*.joblib
 *.h5
 *.model
 *.weights
@@ -155,14 +169,23 @@ models/trained/
 *.csv
 *.parquet
 
-# IDEs
+# IMPORTANT: Include our trained model for deployment
+# Our malware_detector.joblib is small (1.24MB) and needed
+# So we DON'T exclude *.joblib files
+
+# ============================================
+# IDEs & Editors
+# ============================================
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# OS
+# ============================================
+# Operating Systems
+# ============================================
+# Windows
 .DS_Store
 .DS_Store?
 ._*
@@ -170,15 +193,72 @@ models/trained/
 .Trashes
 ehthumbs.db
 Thumbs.db
+*.lnk
+ehthumbs_vista.db
 
+# macOS
+.AppleDouble
+.LSOverride
+Icon
+
+# Linux
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ============================================
 # Logs
+# ============================================
 logs
 *.log
 
+# ============================================
+# Development & Testing
+# ============================================
 # Uploaded files (for development)
 uploads/
 temp/
+test_uploads/
 
-# Model artifacts (keep training scripts but ignore large model files)
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.orig
+
+# ============================================
+# Deployment & Platforms
+# ============================================
+.vercel
+.netlify
+.railway
+railway.json
+.replit
+replit.nix
+.upm
+
+# Frontend build files
+frontend/build/
+frontend/dist/
+
+# ============================================
+# Security (NEVER COMMIT THESE!)
+# ============================================
+*.pem
+*.key
+*.cert
+*.crt
+.secrets
+secrets.json
+config/secrets.yml
+
+# ============================================
+# Optional (uncomment if needed)
+# ============================================
+# Package lock files (some teams prefer to include these)
+# frontend/package-lock.json
+# frontend/yarn.lock
+
+# Large binary files
 *.bin
 *.safetensors

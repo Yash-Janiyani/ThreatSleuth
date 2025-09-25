@@ -1,0 +1,15 @@
+# Exclude large directories from WARP indexing
+node_modules/
+frontend/node_modules/
+backend/venv/
+backend/uploads/
+models/
+*.joblib
+*.pkl
+*.bin
+*.safetensors
+.git/
+__pycache__/
+*.pyc
+*.pyo
+*.log

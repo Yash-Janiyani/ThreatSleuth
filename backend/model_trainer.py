@@ -26,24 +26,56 @@ class MalwareModelTrainer:
         
         # Generate features for benign files
         benign_samples = n_samples // 2
-        benign_file_sizes = np.random.lognormal(mean=10, sigma=2, size=benign_samples)  # Smaller files
-        benign_entropy = np.random.normal(loc=5.5, scale=1.5, size=benign_samples)  # Lower entropy
-        benign_imports = np.random.poisson(lam=25, size=benign_samples)  # Reasonable imports
+        
+        # Create different types of benign files
+        # 1. Small text files (30% of benign)
+        small_text_count = int(benign_samples * 0.3)
+        small_file_sizes = np.random.uniform(10, 10000, size=small_text_count)  # Very small files
+        small_entropy = np.random.uniform(1.0, 4.5, size=small_text_count)  # Low entropy for text
+        small_imports = np.zeros(small_text_count)  # No imports for text files
+        
+        # 2. Regular executables (70% of benign)
+        regular_count = benign_samples - small_text_count
+        regular_file_sizes = np.random.lognormal(mean=10, sigma=2, size=regular_count)  # Regular files
+        regular_entropy = np.random.normal(loc=5.5, scale=1.2, size=regular_count)  # Medium entropy
+        regular_imports = np.random.poisson(lam=25, size=regular_count)  # Reasonable imports
+        
+        # Combine benign samples
+        benign_file_sizes = np.concatenate([small_file_sizes, regular_file_sizes])
+        benign_entropy = np.concatenate([small_entropy, regular_entropy])
+        benign_imports = np.concatenate([small_imports, regular_imports])
         
         # Clip values to reasonable ranges
         benign_entropy = np.clip(benign_entropy, 0, 8)
         benign_imports = np.clip(benign_imports, 0, 200)
-        benign_file_sizes = np.clip(benign_file_sizes, 1024, 50_000_000)
+        benign_file_sizes = np.clip(benign_file_sizes, 10, 50_000_000)  # Allow very small files
         
         # Generate features for malicious files
         malicious_samples = n_samples - benign_samples
-        malicious_file_sizes = np.random.lognormal(mean=12, sigma=2, size=malicious_samples)  # Larger files
-        malicious_entropy = np.random.normal(loc=7.2, scale=1.0, size=malicious_samples)  # Higher entropy
-        malicious_imports = np.concatenate([
-            np.random.poisson(lam=5, size=malicious_samples//3),  # Some with very few imports (packed)
-            np.random.poisson(lam=80, size=malicious_samples//3),  # Some with many imports
-            np.random.poisson(lam=30, size=malicious_samples - 2*(malicious_samples//3))  # Normal range
-        ])
+        
+        # Create different types of malicious files
+        # 1. Packed/encrypted malware (40% - high entropy, few imports)
+        packed_count = int(malicious_samples * 0.4)
+        packed_file_sizes = np.random.lognormal(mean=11, sigma=1.5, size=packed_count)
+        packed_entropy = np.random.uniform(7.0, 8.0, size=packed_count)  # Very high entropy
+        packed_imports = np.random.poisson(lam=3, size=packed_count)  # Very few imports
+        
+        # 2. Large complex malware (30% - medium-high entropy, many imports)
+        complex_count = int(malicious_samples * 0.3)
+        complex_file_sizes = np.random.lognormal(mean=13, sigma=1.8, size=complex_count)
+        complex_entropy = np.random.uniform(6.5, 7.5, size=complex_count)
+        complex_imports = np.random.poisson(lam=80, size=complex_count)  # Many imports
+        
+        # 3. Simple malware (30% - medium entropy, medium imports)
+        simple_count = malicious_samples - packed_count - complex_count
+        simple_file_sizes = np.random.lognormal(mean=10.5, sigma=2, size=simple_count)
+        simple_entropy = np.random.uniform(5.5, 7.0, size=simple_count)
+        simple_imports = np.random.poisson(lam=40, size=simple_count)
+        
+        # Combine malicious samples
+        malicious_file_sizes = np.concatenate([packed_file_sizes, complex_file_sizes, simple_file_sizes])
+        malicious_entropy = np.concatenate([packed_entropy, complex_entropy, simple_entropy])
+        malicious_imports = np.concatenate([packed_imports, complex_imports, simple_imports])
         
         # Clip values to reasonable ranges
         malicious_entropy = np.clip(malicious_entropy, 0, 8)

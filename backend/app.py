@@ -9,7 +9,12 @@ from feature_extractor import FeatureExtractor
 from model_trainer import load_model
 
 app = Flask(__name__)
-CORS(app)
+# Configure CORS for production
+CORS(app, origins=[
+    "http://localhost:3000",  # Local development
+    "https://*.vercel.app",   # Vercel deployments
+    "https://your-frontend-domain.vercel.app"  # Replace with your actual domain
+])
 
 # Configuration
 UPLOAD_FOLDER = 'uploads'
@@ -115,29 +120,39 @@ def fallback_prediction(features):
     # Simple scoring based on suspicious characteristics
     score = 0
     
+    # Small files with very low entropy are likely benign text files
+    if file_size < 10000 and entropy < 4.0:
+        score -= 0.4  # Strong benign signal
+    
     # Large files are slightly more suspicious
     if file_size > 5 * 1024 * 1024:  # > 5MB
-        score += 0.1
+        score += 0.15
     
     # High entropy suggests encryption/packing (suspicious)
     if entropy > 7.5:
-        score += 0.4
+        score += 0.5
     elif entropy > 7.0:
-        score += 0.2
-    
-    # Very low entropy might indicate simple/test files (less suspicious)
-    if entropy < 3.0:
-        score -= 0.2
-    
-    # Unusual number of imports
-    if imports_count > 100:
         score += 0.3
-    elif imports_count == 0:
-        score += 0.2
+    elif entropy > 6.0:
+        score += 0.1
     
-    # Convert to binary prediction
-    prediction = 1 if score > 0.3 else 0
-    confidence = min(max(abs(score - 0.3) + 0.5, 0.5), 0.9)
+    # Very low entropy indicates simple/text files (benign)
+    if entropy < 3.0:
+        score -= 0.3
+    elif entropy < 4.0:
+        score -= 0.15
+    
+    # Import analysis
+    if imports_count > 100:
+        score += 0.3  # Many imports can be suspicious
+    elif imports_count == 0 and file_size > 10000:
+        score += 0.2  # No imports in large files (possibly packed)
+    elif imports_count == 0 and file_size < 10000:
+        score -= 0.1  # No imports in small files is normal (text files)
+    
+    # Convert to binary prediction with more conservative threshold
+    prediction = 1 if score > 0.2 else 0
+    confidence = min(max(abs(score) + 0.5, 0.5), 0.95)
     
     return prediction, confidence
 
@@ -189,4 +204,6 @@ def get_stats():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+    app.run(debug=debug, host='0.0.0.0', port=port)
