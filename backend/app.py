@@ -13,7 +13,7 @@ app = Flask(__name__)
 CORS(app, origins=[
     "http://localhost:3000",  # Local development
     "https://*.vercel.app",   # Vercel deployments
-    "https://your-frontend-domain.vercel.app"  # Replace with your actual domain
+    "https://threat-sleuth-two.vercel.app"  # Your actual Vercel domain
 ])
 
 # Configuration
