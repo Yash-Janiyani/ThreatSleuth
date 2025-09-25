@@ -50,6 +50,21 @@ def health_check():
         'model_loaded': model is not None
     })
 
+@app.route('/ThreatSleuth', methods=['GET'])
+def render_health_check():
+    """Render-specific health check endpoint"""
+    return jsonify({
+        'status': 'healthy',
+        'service': 'ThreatSleuth API',
+        'version': '1.0.0',
+        'model_loaded': model is not None
+    })
+
+@app.route('/health', methods=['GET'])
+def simple_health():
+    """Simple health check"""
+    return "OK", 200
+
 @app.route('/api/predict', methods=['POST'])
 def predict_malware():
     """Main prediction endpoint for malware detection"""
